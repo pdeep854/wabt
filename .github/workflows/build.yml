@@ -31,7 +31,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest, windows-11-arm]
     steps:
     - uses: actions/setup-python@v5
       with:
@@ -53,9 +53,16 @@ jobs:
     - name: cmake
       run: cmake -S . -B out -G Ninja -DWERROR=ON -Werror=dev -DCMAKE_ERROR_DEPRECATED=OFF
       if: matrix.os != 'windows-latest'
+      run: cmake .. -G Ninja -DWERROR=ON -Werror=dev -DCMAKE_ERROR_DEPRECATED=OFF
+      working-directory: out
+      if: matrix.os != 'windows-latest' && matrix.os != 'windows-11-arm'
     - name: cmake (windows)
       run: cmake -S . -B out -DWERROR=ON -Werror=dev -DCMAKE_ERROR_DEPRECATED=OFF
       if: matrix.os == 'windows-latest'
+    - name: cmake (windows arm64)
+      run: cmake .. -A ARM64 -DWERROR=ON -Werror=dev -DCMAKE_ERROR_DEPRECATED=OFF
+      working-directory: out
+      if: matrix.os == 'windows-11-arm'
     - name: build
       run: cmake --build out
     - name: check if generated files are up-to-date

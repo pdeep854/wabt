@@ -340,7 +340,7 @@ DEFINE_STORE(i64_store32, u32, u64)
 
 static inline int I64_CLZ(unsigned long long v) {
   unsigned long r = 0;
-#if defined(_M_AMD64) || defined(_M_ARM)
+#if defined(_M_AMD64) || defined(_M_ARM) || defined(_M_ARM64)
   if (_BitScanReverse64(&r, v)) {
     return 63 - r;
   }
@@ -367,7 +367,7 @@ static inline int I64_CTZ(unsigned long long v) {
     return 64;
   }
   unsigned long r = 0;
-#if defined(_M_AMD64) || defined(_M_ARM)
+#if defined(_M_AMD64) || defined(_M_ARM) || defined(_M_ARM64)
   _BitScanForward64(&r, v);
   return (int)r;
 #else

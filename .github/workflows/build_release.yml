@@ -31,6 +31,9 @@ jobs:
           - os: windows-latest
             arch: x86_64
             name: windows-x64
+          - os: windows-11-arm
+            arch: aarch64
+            name: windows-arm64
     defaults:
       run:
         shell: bash
@@ -59,19 +62,23 @@ jobs:
 
     - name: cmake (unix)
       run: cmake -S . -B out -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install
-      if: matrix.os != 'windows-latest'
+      if: matrix.os != 'windows-latest' && matrix.os != 'windows-11-arm'
 
     - name: cmake (win)
       # -G "Visual Studio 15 2017"
       run: cmake -S . -B out -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install
       if: matrix.os == 'windows-latest'
 
+    - name: cmake (win arm64)
+      run: cmake -S . -B out -A ARM64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=install
+      if: matrix.os == 'windows-11-arm'
+
     - name: build
       run: cmake --build out --config Release --target install
 
     - name: strip
       run: find bin/ -type f -perm -u=x -exec strip {} +
-      if: matrix.os != 'windows-latest'
+      if: matrix.os != 'windows-latest' && matrix.os != 'windows-11-arm'
 
     - uses: ./.github/actions/release-archive
       with:

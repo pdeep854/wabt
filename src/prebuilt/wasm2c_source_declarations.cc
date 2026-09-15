@@ -646,7 +646,7 @@ static inline int I64_CLZ(unsigned long long v) {
 )w2c_template"
 R"w2c_template(  unsigned long r = 0;
 )w2c_template"
-R"w2c_template(#if defined(_M_AMD64) || defined(_M_ARM)
+R"w2c_template(#if defined(_M_AMD64) || defined(_M_ARM) || defined(_M_ARM64)
 )w2c_template"
 R"w2c_template(  if (_BitScanReverse64(&r, v)) {
 )w2c_template"
@@ -698,7 +698,7 @@ R"w2c_template(  }
 )w2c_template"
 R"w2c_template(  unsigned long r = 0;
 )w2c_template"
-R"w2c_template(#if defined(_M_AMD64) || defined(_M_ARM)
+R"w2c_template(#if defined(_M_AMD64) || defined(_M_ARM) || defined(_M_ARM64)
 )w2c_template"
 R"w2c_template(  _BitScanForward64(&r, v);
 )w2c_template"
